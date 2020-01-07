@@ -37,6 +37,28 @@ abstract class CelestialBody {
     angle += speed * deltaTime;
    }
    
+   public abstract void show(long deltaTime);
+
+}
+
+
+class TexturedCelestialBody extends CelestialBody {
+    
+  protected PImage img;
+  
+  public TexturedCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, String imgName) {
+    super(radius, distance, speed, moons);
+    img = loadImage(imgName);
+    shape.setTexture(img);
+  }
+  
+  public TexturedCelestialBody(float radius, float distance, float speed, String imgName) {
+    super(radius, distance, speed);
+    img = loadImage(imgName);
+    shape.setTexture(img);
+  }
+  
+   @Override
    public void show(long deltaTime) {
     pushMatrix();
     noStroke();
@@ -56,20 +78,33 @@ abstract class CelestialBody {
 }
 
 
-class TexturedCelestialBody extends CelestialBody {
+class Star extends TexturedCelestialBody {
     
-  protected PImage img;
-  
-  public TexturedCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, String imgName) {
-    super(radius, distance, speed, moons);
-    img = loadImage(imgName);
-    shape.setTexture(img);
+  public Star(float radius, float distance, float speed, List<CelestialBody> moons, String imgName) {
+    super(radius, distance, speed, moons, imgName);
   }
   
-  public TexturedCelestialBody(float radius, float distance, float speed, String imgName) {
-    super(radius, distance, speed);
-    img = loadImage(imgName);
-    shape.setTexture(img);
+  public Star(float radius, float distance, float speed, String imgName) {
+    super(radius, distance, speed, imgName);
+  }
+  
+   @Override
+   public void show(long deltaTime) {
+    pushMatrix();
+    noStroke();
+    fill(255);
+    rotate(angle);
+    translate(distance, 0);
+    emissive(255, 255, 255);
+    shape(shape);
+    pointLight(255, 255, 255, 0, 0, 0);
+    if (moons != null) {
+    for (CelestialBody moon : moons) {
+      moon.show(deltaTime);
+      moon.move(deltaTime);
+    } 
+   }
+   popMatrix();
   }
 
 }
