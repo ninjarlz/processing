@@ -10,9 +10,12 @@ PeasyCam cam;
 void setup() {
   size(1600, 1000, P3D);
   cam = new PeasyCam(this, width /2, height /2 ,0, 600);
+  
+  star = new Star(20, 0, 0, planets, "star.jpg");
+  
   List<CelestialBody> moons1 = new ArrayList<CelestialBody>();
-  moons1.add(new TexturedCelestialBody(6, 20, 0.005, "planet6.jpg"));
-  planets.add(new TexturedCelestialBody(13, 50, 0.0025, moons1, "planet1.jpg"));
+  moons1.add(new ImportedCelestialBody(6, 20, 0.005, "asteroid.obj"));
+  planets.add(new ShiningCelestialBody(13, 50, 0.0025, moons1, "planet3.jpg"));
   
   List<CelestialBody> moons2 = new ArrayList<CelestialBody>();
   moons2.add(new TexturedCelestialBody(7, 30, 0.005, "planet2.jpg"));
@@ -26,7 +29,7 @@ void setup() {
   moons3.add(new TexturedCelestialBody(7, 74, 0.00085, "planet4.jpg"));
   planets.add(new TexturedCelestialBody(12, 230, 0.0005, moons3, "planet1.jpg"));
   
-  planets.add(new TexturedCelestialBody(14, 324, -0.0008, "planet1.jpg"));
+  planets.add(new TexturedCelestialBody(14, 324, -0.0008, "planet3.jpg"));
   
   
   List<CelestialBody> moons4 = new ArrayList<CelestialBody>();
@@ -43,9 +46,9 @@ void setup() {
   moons6.add(new TexturedCelestialBody(8, 40, 0.0045, "planet3.jpg"));
   moons6.add(new TexturedCelestialBody(6, 60, -0.0015, "planet5.jpg"));
   moons6.add(new TexturedCelestialBody(7, 74, -0.00085, "planet2.jpg"));
-  planets.add(new TexturedCelestialBody(12, 680, -0.0005, moons6, "planet1.jpg"));
+  planets.add(new ColouredCelestialBody(12, 680, -0.0005, moons6, 0, 255, 0));
 
-  star = new Star(20, 0, 0, planets, "star.jpg");
+  
   bg = loadImage("space.jpg");
   bg.resize(width, height);
  }
@@ -55,6 +58,7 @@ void draw() {
   background(bg);
   translate(width / 2, height / 2);
   long currTime = millis();
+  //directionalLight();
   star.show(currTime - time);
   time = currTime;
 }

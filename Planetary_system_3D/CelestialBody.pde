@@ -15,9 +15,7 @@ abstract class CelestialBody {
     this.speed = speed;
     this.moons = moons;
     noStroke();
-    noFill();
-    shape = createShape(SPHERE, radius);
-  }
+   }
   
   public CelestialBody(float radius, float distance, float speed) {
     this.radius = radius;
@@ -25,8 +23,6 @@ abstract class CelestialBody {
     angle = random(TWO_PI);
     this.speed = speed;
     noStroke();
-    noFill();
-    shape = createShape(SPHERE, radius);
   }
   
   public List<CelestialBody> getMoons() {
@@ -36,9 +32,70 @@ abstract class CelestialBody {
   private void move(long deltaTime) {
     angle += speed * deltaTime;
    }
-   
-   public abstract void show(long deltaTime);
+   public void show(long deltaTime) {
+    pushMatrix();
+    rotate(angle);
+    translate(distance, 0);
+     shape(shape);
+    if (moons != null) {
+    for (CelestialBody moon : moons) {
+      moon.show(deltaTime);
+      moon.move(deltaTime);
+    } 
+   }
+   popMatrix();
+  }
 
+}
+
+
+class ImportedCelestialBody extends CelestialBody {
+   public ImportedCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, String modelName) {
+    super(radius, distance, speed, moons);
+    noFill();
+    shape = loadShape(modelName);
+    shape.scale(0.01);
+  }
+  
+  public ImportedCelestialBody(float radius, float distance, float speed, String modelName) {
+    super(radius, distance, speed);
+    noFill();
+    shape = loadShape(modelName);
+    shape.scale(0.01);
+  }
+}
+
+
+class ColouredCelestialBody extends CelestialBody {
+   public ColouredCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, int r, int g, int b) {
+    super(radius, distance, speed, moons);
+    fill(r,g,b);
+    shape = createShape(SPHERE, radius);
+   }
+  
+  public ColouredCelestialBody(float radius, float distance, float speed, int r, int g, int b) {
+    super(radius, distance, speed);
+    fill(r,g,b);
+    shape = createShape(SPHERE, radius);
+   }
+   
+   @Override
+   public void show(long deltaTime) {
+    pushMatrix();
+    rotate(angle);
+    translate(distance, 0);
+    specular(255, 255, 255);
+    shape(shape);
+    if (moons != null) {
+    for (CelestialBody moon : moons) {
+      moon.show(deltaTime);
+      moon.move(deltaTime);
+    } 
+   }
+   popMatrix();
+  }
+  
+  
 }
 
 
@@ -49,23 +106,37 @@ class TexturedCelestialBody extends CelestialBody {
   public TexturedCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, String imgName) {
     super(radius, distance, speed, moons);
     img = loadImage(imgName);
+    noFill();
+    shape = createShape(SPHERE, radius);
     shape.setTexture(img);
   }
   
   public TexturedCelestialBody(float radius, float distance, float speed, String imgName) {
     super(radius, distance, speed);
+    noFill();
     img = loadImage(imgName);
+    shape = createShape(SPHERE, radius);
     shape.setTexture(img);
   }
+}
+
+class ShiningCelestialBody extends TexturedCelestialBody {
+public ShiningCelestialBody(float radius, float distance, float speed, List<CelestialBody> moons, String imgName) {
+    super(radius, distance, speed, moons, imgName);
+  }
   
-   @Override
-   public void show(long deltaTime) {
+  public ShiningCelestialBody(float radius, float distance, float speed, String imgName) {
+    super(radius, distance, speed, imgName);
+  }
+
+  @Override
+  public void show(long deltaTime) {
     pushMatrix();
-    noStroke();
-    fill(255);
     rotate(angle);
     translate(distance, 0);
+    spotLight(255, 0, 0, 0, 0, 0, -1, 0, 0, PI/2, 2);
     shape(shape);
+    
     if (moons != null) {
     for (CelestialBody moon : moons) {
       moon.show(deltaTime);
@@ -74,6 +145,7 @@ class TexturedCelestialBody extends CelestialBody {
    }
    popMatrix();
   }
+
 
 }
 
@@ -91,8 +163,6 @@ class Star extends TexturedCelestialBody {
    @Override
    public void show(long deltaTime) {
     pushMatrix();
-    noStroke();
-    fill(255);
     rotate(angle);
     translate(distance, 0);
     emissive(255, 255, 255);
