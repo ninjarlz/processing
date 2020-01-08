@@ -7,6 +7,7 @@ abstract class CelestialBody {
   protected float speed; 
   protected List<CelestialBody> moons;
   protected PShape shape;
+  protected float rotAng;
   
   public CelestialBody(float radius, float distance, float speed, List<CelestialBody> moons) {
     this.radius = radius;
@@ -14,6 +15,7 @@ abstract class CelestialBody {
     angle = random(TWO_PI);
     this.speed = speed;
     this.moons = moons;
+    this.rotAng = random(0, PI/8);
     noStroke();
    }
   
@@ -22,6 +24,7 @@ abstract class CelestialBody {
     this.distance = distance;
     angle = random(TWO_PI);
     this.speed = speed;
+    this.rotAng = random(0, PI/8);
     noStroke();
   }
   
@@ -82,6 +85,7 @@ class ColouredCelestialBody extends CelestialBody {
    @Override
    public void show(long deltaTime) {
     pushMatrix();
+    rotateY(rotAng);
     rotate(angle);
     translate(distance, 0);
     specular(255, 255, 255);
@@ -132,6 +136,7 @@ public ShiningCelestialBody(float radius, float distance, float speed, List<Cele
   @Override
   public void show(long deltaTime) {
     pushMatrix();
+    rotateY(rotAng);
     rotate(angle);
     translate(distance, 0);
     spotLight(255, 0, 0, 0, 0, 0, -1, 0, 0, PI/2, 2);
@@ -163,11 +168,13 @@ class Star extends TexturedCelestialBody {
    @Override
    public void show(long deltaTime) {
     pushMatrix();
+    rotateY(rotAng);
     rotate(angle);
     translate(distance, 0);
     emissive(255, 255, 255);
     shape(shape);
     pointLight(255, 255, 255, 0, 0, 0);
+    directionalLight(0, 0, 255, 0, -100, 0);
     if (moons != null) {
     for (CelestialBody moon : moons) {
       moon.show(deltaTime);

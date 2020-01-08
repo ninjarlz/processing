@@ -58,7 +58,6 @@ void draw() {
   background(bg);
   translate(width / 2, height / 2);
   long currTime = millis();
-  //directionalLight();
   star.show(currTime - time);
   time = currTime;
 }
