@@ -80,5 +80,6 @@ void draw() {
   }
   
   void mouseMoved() {
-    spaceship.mouseMoved(mouseX - pmouseX, mouseY - pmouseY);
+    double dist = cam.getDistance();
+    spaceship.mouseMoved((mouseX - pmouseX) * dist / 800, (mouseY - pmouseY) * dist / 800);
   }

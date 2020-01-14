@@ -75,7 +75,7 @@ class Spaceship {
     }
   }
   
-  public void mouseMoved(int xDelta, int yDelta) {
+  public void mouseMoved(double xDelta, double yDelta) {
     pos.x += xDelta;
     pos.y += yDelta;
   }
