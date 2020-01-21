@@ -37,6 +37,7 @@ abstract class CelestialBody {
    }
    public void show(long deltaTime) {
     pushMatrix();
+    rotateY(rotAng);
     rotate(angle);
     translate(distance, 0);
      shape(shape);

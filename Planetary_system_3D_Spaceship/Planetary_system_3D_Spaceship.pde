@@ -70,7 +70,7 @@ void draw() {
  void keyPressed() {
     if (key == CODED) {
       spaceship.keyPressed(keyCode);
-    }
+    } 
   }
   
    void keyReleased() {
@@ -80,6 +80,6 @@ void draw() {
   }
   
   void mouseMoved() {
-    double dist = cam.getDistance();
-    spaceship.mouseMoved((mouseX - pmouseX) * dist / 800, (mouseY - pmouseY) * dist / 800);
+    //double dist = cam.getDistance();
+    //spaceship.mouseMoved((mouseX - pmouseX) * dist / 800, (mouseY - pmouseY) * dist / 800);
   }
